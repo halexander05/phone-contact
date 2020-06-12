@@ -1,0 +1,16 @@
+.contact-form {
+  padding: 15px;
+  .input-full-width {
+    width: 100%;
+  }
+  .submitButton {
+    margin-top: 30px;
+  }
+  .spinnerContainer,
+  .TextSubmitButton {
+    display: inline-block;
+  }
+  .spinnerContainer{
+    margin-right: 10px;
+  }
+}
