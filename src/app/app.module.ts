@@ -22,9 +22,10 @@ import { MaterialModule } from './material/material.module';
 /* ngx-toatr */
 import { ToastrModule } from 'ngx-toastr';
 import { SpinnerComponent } from './ui/spinner/spinner.component';
+import { DialogComponent } from './ui/dialog/dialog.component';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, ContactsComponent, NewComponent, SpinnerComponent],
+  declarations: [AppComponent, HomeComponent, ContactsComponent, NewComponent, SpinnerComponent, DialogComponent],
   imports: [
     BrowserModule,
     FormsModule,

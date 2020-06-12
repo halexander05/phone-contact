@@ -3,7 +3,7 @@
     <div class="col col-lg-9 offset-lg-1">
       <div class="row">
         <div class="col col-lg-8">
-          <h1>Contact list</h1>
+          <h1>Lista de Contactos</h1>
         </div>
         <div class="col col-lg-4 text-right">
           <button mat-stroked-button color="primary" (click)="redirectToNew()">
@@ -12,6 +12,84 @@
         </div>
       </div>
       <hr />
+      <div class="row">
+        <div class="col" *ngIf="contacts.length > 0">
+          <div class="contacts">
+            <table mat-table [dataSource]="contacts" class="mat-elevation-z8">
+              <!-- Columna Identificador-->
+              <ng-container matColumnDef="identificador">
+                <th mat-header-cell *matHeaderCellDef>Identificador</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.identificador }}
+                </td>
+              </ng-container>
+              <!-- Columna nombre -->
+              <ng-container matColumnDef="nombre">
+                <th mat-header-cell *matHeaderCellDef>Nombre</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.nombre }}
+                </td>
+              </ng-container>
+              <!-- Columna telefono -->
+              <ng-container matColumnDef="telefono">
+                <th mat-header-cell *matHeaderCellDef>Teléfono</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.telefono }}
+                </td>
+              </ng-container>
+              <!-- Columna correo -->
+              <ng-container matColumnDef="correo">
+                <th mat-header-cell *matHeaderCellDef>Correo Electrónico</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.correo }}
+                </td>
+              </ng-container>
+              <!-- Columna Fecha de nacimiento -->
+              <ng-container matColumnDef="fecha_de_nacimiento">
+                <th mat-header-cell *matHeaderCellDef>Fecha de Nacimiento</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.fechaNacimiento }}
+                </td>
+              </ng-container>
+              <!-- Columna Fecha de nacimiento -->
+              <ng-container matColumnDef="opciones">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element">
+                  <div class="row">
+                    <div class="col col-lg-6">
+                      <mat-icon
+                        class="optionsButton"
+                        aria-hidden="false"
+                        aria-label="Example home icon"
+                        matTooltip="Editar Contacto"
+                        (click)="redirectForEdit(element.id)"
+                        >edit</mat-icon
+                      >
+                    </div>
+                    <div class="col col-lg-6">
+                      <mat-icon
+                        class="optionsButton"
+                        aria-hidden="false"
+                        aria-label="Example home icon"
+                        matTooltip="Eliminar Contacto"
+                        (click)="showDialogConfirm(element.id)"
+                        >delete</mat-icon
+                      >
+                    </div>
+                  </div>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="tableColums"></tr>
+              <tr mat-row *matRowDef="let row; columns: tableColums"></tr>
+            </table>
+          </div>
+        </div>
+        <div class="col text-center" *ngIf="contacts.length == 0">
+          <div class="noContactsContainer">
+            <h1>No hay contactos telefónicos registrados.</h1>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

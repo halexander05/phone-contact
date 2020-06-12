@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ContactsService } from '../../providers/contacts.service';
 import { MessageService } from '../../providers/message.service';
+import { Router, ActivatedRoute } from '@angular/router';
+
 import * as moment from 'moment';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new',
@@ -11,25 +12,41 @@ import { Router } from '@angular/router';
   styleUrls: ['./new.component.scss'],
 })
 export class NewComponent implements OnInit {
-  textSubmitButton = 'Agregar Nuevo Contacto';
-  showSpiner = false;
+  textSubmitButton = 'Agregar';
+  showSpinner = false;
 
+  id = null;
   formContact: FormGroup;
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private formBuilder: FormBuilder,
     private serviceContact: ContactsService,
     private serviceMessage: MessageService
   ) {}
 
   ngOnInit(): void {
-    this.initForm();
+    this.route.queryParams.subscribe((params) => {
+      this.id = params['id'] || null;
+      if (this.id) {
+        this.textSubmitButton = 'Editar';
+        this.serviceContact.getContact(this.id).subscribe((concatSnapshot) => {
+          const data = concatSnapshot.payload.data();
+          this.initForm(data);
+        });
+      } else {
+        this.initForm();
+      }
+    });
   }
 
   onSubmit() {
-    this.showSpiner = true;
-    this.textSubmitButton = 'Enviando..';
+    let query = null;
+    let message = 'El contacto fue agregado de manera exitosa.';
+
+    this.showSpinner = true;
+    this.textSubmitButton = this.id ? 'Actualizando..' : 'Enviando..';
 
     const form = this.formContact;
     const data = {
@@ -38,27 +55,31 @@ export class NewComponent implements OnInit {
       telefono: form.get('telefono').value,
       correo: form.get('correo').value,
       fechaNacimiento: moment(form.get('fechaNacimiento').value).format(
-        'DD/MM/YYYY'
+        'MM/DD/YYYY'
       ),
     };
 
-    this.serviceContact
-      .addContact(data)
+    if (this.id) {
+      query = this.serviceContact.updateContact(this.id, data);
+      message = 'El contacto fue actualizado de manera exitosa.';
+    } else {
+      query = this.serviceContact.addContact(data);
+    }
+
+    query
       .then((response) => {
         this.resetForm();
-        this.showSpiner = false;
-        this.textSubmitButton = 'Agregar Nuevo Contacto';
+        this.showSpinner = false;
+        this.textSubmitButton = this.id ? 'Editar' : 'Agregar';
 
-        this.serviceMessage.success(
-          'El contacto fue agregado de manera exitosa.'
-        );
+        this.serviceMessage.success(message);
         setTimeout(() => {
           this.router.navigate(['/contacts']);
         }, 3000);
       })
       .catch((error) => {
-        this.showSpiner = false;
-        this.textSubmitButton = 'Agregar Nuevo Contacto';
+        this.showSpinner = false;
+        this.textSubmitButton = this.id ? 'Editar' : 'Agregar';
         this.serviceMessage.error('Error! Algo ha salido mal.');
       });
   }
@@ -67,13 +88,19 @@ export class NewComponent implements OnInit {
     this.formContact.reset();
   }
 
-  private initForm() {
+  private initForm(params = null) {
+    const identificador = params ? params.identificador : null;
+    const nombre = params ? params.nombre : null;
+    const telefono = params ? params.telefono : null;
+    const correo = params ? params.correo : null;
+    const fechaNacimiento = params ? new Date(params.fechaNacimiento) : null;
+
     this.formContact = this.formBuilder.group({
-      identificador: ['', Validators.required],
-      nombre: ['', Validators.required],
-      telefono: ['', Validators.required],
-      correo: ['', Validators.required],
-      fechaNacimiento: ['', Validators.required],
+      identificador: [identificador, Validators.required],
+      nombre: [nombre, Validators.required],
+      telefono: [telefono, Validators.required],
+      correo: [correo, Validators.required],
+      fechaNacimiento: [fechaNacimiento, Validators.required],
     });
   }
 }

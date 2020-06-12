@@ -17,6 +17,14 @@ const routes: Routes = [
     path: 'contacts/new',
     component: NewComponent,
   },
+  {
+    path: 'contacts/edit',
+    component: NewComponent,
+  },
+  {
+    path: '**',
+    redirectTo: '',
+  },
 ];
 
 @NgModule({

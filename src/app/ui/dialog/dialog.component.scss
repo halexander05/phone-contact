@@ -1,0 +1,15 @@
+.warning-container {
+  span {
+    mat-icon {
+      font-size: 25px;
+      color: orange;
+      position: relative;
+      top: 3px;
+      margin-right: 5px;
+    }
+  }
+}
+
+.message-container {
+  margin: 10px 0;
+}

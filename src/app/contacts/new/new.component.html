@@ -4,7 +4,12 @@
       <mat-card>
         <div class="row">
           <div class="col">
-            <h1>Nuevo Contacto</h1>
+            <h1 class="titulo">{{ id ? "Editar Contacto" : "Nuevo Contacto" }}</h1>
+            <div class="row">
+              <div class="col text-right">
+                <span class="mensajeRequerido">Campos requeridos *</span>
+              </div>
+            </div>
           </div>
         </div>
         <hr />
@@ -15,7 +20,7 @@
                 <div class="row">
                   <div class="col">
                     <mat-form-field class="input-full-width">
-                      <mat-label>Identificación</mat-label>
+                      <mat-label>Identificación*</mat-label>
                       <input
                         matInput
                         placeholder="Ingresar identificación"
@@ -27,7 +32,7 @@
                 <div class="row">
                   <div class="col">
                     <mat-form-field class="input-full-width">
-                      <mat-label>Nombre</mat-label>
+                      <mat-label>Nombre*</mat-label>
                       <input
                         matInput
                         placeholder="Ingresar nombre"
@@ -39,7 +44,7 @@
                 <div class="row">
                   <div class="col">
                     <mat-form-field class="input-full-width">
-                      <mat-label>Teléfono</mat-label>
+                      <mat-label>Teléfono*</mat-label>
                       <input
                         matInput
                         placeholder="Ingresar teléfono"
@@ -51,7 +56,7 @@
                 <div class="row">
                   <div class="col">
                     <mat-form-field class="input-full-width">
-                      <mat-label>Correo electrónico</mat-label>
+                      <mat-label>Correo electrónico*</mat-label>
                       <input
                         matInput
                         placeholder="Ingresar correo electrónico"
@@ -63,7 +68,7 @@
                 <div class="row">
                   <div class="col col-lg-6">
                     <mat-form-field class="input-full-width">
-                      <mat-label>Fecha de nacimiento</mat-label>
+                      <mat-label>Fecha de nacimiento*</mat-label>
                       <input
                         matInput
                         [matDatepicker]="picker"
@@ -88,9 +93,11 @@
                       >
                         <app-spinner
                           class="spinnerContainer"
-                          *ngIf="showSpiner"
+                          *ngIf="showSpinner"
                         ></app-spinner>
-                        <span class="TextSubmitButton">{{ textSubmitButton }}</span>
+                        <span class="TextSubmitButton">{{
+                          textSubmitButton
+                        }}</span>
                       </button>
                     </div>
                   </div>
